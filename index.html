@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Define a codificação universal para suportar acentos e caracteres especiais -->
+  <meta charset="UTF-8">
+  <!-- Título da aba do navegador -->
+  <title>SALC-NOTES | Sgt De Moura</title>
+  <!-- Permite layout responsivo em todos dispositivos -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Importa o CSS principal do sistema -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Biblioteca PDF.js para gerar miniaturas dos PDFs nos cards -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.min.js"></script>
+  <link rel="icon" type="image/x-icon" href="public/favicon.ico">
+
+</head>
+
+<body>
+  <!-- ===================== TELA DE LOGIN ===================== -->
+  <div id="loginScreen" class="login-screen">
+    <!-- Formulário de login centralizado na tela -->
+    <form id="loginForm" class="login-form">
+      <h2>Login SALC-NOTES</h2> <!-- Título do formulário de login -->
+      <input type="text" id="username" placeholder="Usuário" required /> <!-- Campo para nome de usuário -->
+      <input type="password" id="password" placeholder="Senha" required /> <!-- Campo para senha -->
+      <button type="submit">Entrar</button> <!-- Botão para enviar login -->
+      <div id="loginError" class="login-error"></div> <!-- Área para mostrar mensagem de erro -->
+    </form>
+  </div>
+
+  <!-- ===================== CONTAINER PRINCIPAL ===================== -->
+  <div class="container" id="mainContainer" style="display:none;">
+    <!-- ===================== SIDEBAR ===================== -->
+    <aside class="sidebar">
+      <h2>SALC-NOTES</h2> <!-- Título do sistema no menu lateral -->
+
+      <!-- ===== INDICADOR DE UG ATIVA ===== -->
+      <div id="ugSwitcher" class="ug-switcher">
+        <span id="ugAtivaLabel">UG Ativa: Principal</span> <!-- Mostra qual unidade gestora está ativa -->
+      </div>
+
+      <!-- ===== BOTÕES DE CONSULTA DE NOTAS (NE e NC) ===== -->
+      <div class="consulta-btns" id="consultaBtns">
+        <button id="consultarNEBtn" class="consulta-btn">CONSULTAR NE</button> <!-- Botão para consultar notas de empenho -->
+        <button id="consultarNCBtn" class="consulta-btn">CONSULTAR NC</button> <!-- Botão para consultar notas de crédito -->
+      </div>
+
+      <!-- ===== BARRA DE PESQUISA ===== -->
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Pesquisar nota..." /> <!-- Campo de pesquisa -->
+      </div>
+
+      <!-- ===== GRUPO DE BOTÕES DE AÇÃO (desktop e mobile) - Sair, Buscar, Mudar UG ===== -->
+      <div class="action-group">
+        <!-- Botão de sair (bolinha vermelha com ícone SVG) -->
+        <button id="logoutBtnAction" class="action-btn logout-action-btn" title="Sair">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <rect x="3" y="3" width="16" height="16" rx="4" stroke="#fff" stroke-width="2"/>
+            <path d="M9 11H17" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+            <path d="M14 8L17 11L14 14" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <!-- Botão buscar (azul alongado com texto e ícone SVG lupa) -->
+        <button id="buscarBtnAction" class="action-btn search-action-btn" title="Buscar Nota">
+          <span>BUSCAR!</span>
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="10" cy="10" r="8" stroke="#fff" stroke-width="2"/>
+            <line x1="16" y1="16" x2="21" y2="21" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <!-- Botão mudar UG (bolinha laranja com ícone SVG setas) -->
+        <button id="mudarUGBtnAction" class="action-btn ug-action-btn" title="Mudar UG">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="11" cy="11" r="9" stroke="#fff" stroke-width="2"/>
+            <path d="M7 11l4-4v3h4v2h-4v3l-4-4z" fill="#fff"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Botões de inclusão (apenas visíveis para admin) -->
+      <button id="addNCBtn" class="modern-btn green">INCLUIR NC</button> <!-- Botão para incluir nota de crédito -->
+      <button id="addNEBtn" class="modern-btn blue">INCLUIR NE</button> <!-- Botão para incluir nota de empenho -->
+
+      <!-- Inputs de arquivo (escondidos, ativados pelos botões de inclusão) -->
+      <input type="file" id="pdfNCInput" accept="application/pdf" multiple style="display:none" /> <!-- Upload para NC -->
+      <input type="file" id="pdfNEInput" accept="application/pdf" multiple style="display:none" /> <!-- Upload para NE -->
+
+      <!-- Barra de progresso do upload (aparece durante uploads de arquivos) -->
+      <div id="uploadProgress" class="upload-progress" style="display:none">
+        <div id="uploadBar" class="upload-bar"></div>
+      </div>
+
+      <!-- Botão de logout tradicional desktop (fallback, pode ser ocultado via CSS no mobile) -->
+      <button id="logoutBtn" class="modern-btn gray" style="margin-top:auto;">Sair</button>
+    </aside>
+
+    <!-- ===================== ÁREA PRINCIPAL DAS NOTAS ===================== -->
+    <main class="main-content">
+      <!-- Título de seção de NC -->
+      <h3 class="section-title" id="tituloNC">Notas de Crédito</h3>
+      <div id="ncList" class="notes-list"></div>
+
+      <!-- Título de seção de NE -->
+      <h3 class="section-title" id="tituloNE">Notas de Empenho</h3>
+      <div id="neList" class="notes-list"></div>
+    </main>
+  </div>
+
+  <!-- ===================== MODAL DE EXCLUSÃO ===================== -->
+  <div id="modalExcluir" class="modal-excluir" style="display:none">
+    <div class="modal-content">
+      <h4>Excluir Nota</h4> <!-- Título do modal -->
+      <p>Tem certeza que deseja excluir esta nota?</p> <!-- Mensagem de confirmação -->
+      <button id="confirmExcluirBtn" class="modern-btn red">Excluir</button> <!-- Botão para confirmar exclusão -->
+      <button id="cancelExcluirBtn" class="modern-btn gray">Cancelar</button> <!-- Botão para cancelar exclusão -->
+    </div>
+  </div>
+
+  <!-- ===================== SCRIPTS JS PRINCIPAIS ===================== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script> <!-- Biblioteca Supabase -->
+  <script src="app.js"></script> <!-- JS principal do sistema -->
+
+  <!-- ===================== RODAPÉ FIXO ===================== -->
+  <div class="footer-separator"></div>
+  <footer class="footer-app">
+    <span>Desenvolvido por &copy; Júlio Cezar de Moura</span>
+    <span class="footer-bar">|</span>
+    <span>Qualquer sugestão ou bug pode relatar (ajuda muito seu feedback)</span>
+    <span class="footer-bar">|</span>
+    <span>Contato: (51) 9 8492-8221</span>
+    <span class="footer-bar">|</span>
+    <span>Projeto Faculdade - Análise e Desenvolvimento de Sistemas</span>
+  </footer>
+</body>
+</html>

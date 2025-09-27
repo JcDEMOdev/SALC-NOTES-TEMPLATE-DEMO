@@ -1,0 +1,387 @@
+/* =================== RESET GERAL E VIEWPORT =================== */
+/* Remove margens e preenchimentos padrão, define fonte global, impede scroll lateral */
+html, body {
+  margin: 0; /* Remove margens padrão do navegador */
+  padding: 0; /* Remove preenchimentos padrão */
+  font-family: 'Segoe UI', Arial, sans-serif; /* Fonte moderna e legível usada globalmente */
+  background: #5f5e5e; /* Fundo principal neutro */
+  height: 100vh; /* Ocupa toda a altura da tela */
+  width: 100vw; /* Garante que não ultrapasse a largura do viewport */
+  box-sizing: border-box; /* Inclui padding/border na largura real */
+  overflow-x: hidden; /* Protege contra scroll lateral em qualquer dispositivo */
+}
+
+/* ============ TELA DE LOGIN ============ */
+/* Centraliza o formulário de login e cobre toda a tela */
+.login-screen {
+  position: fixed; /* Fixa a tela no topo da visualização */
+  top: 0; left: 0; right: 0; bottom: 0; /* Cobre toda a tela */
+  background: rgba(0,0,0,0.08); /* Fundo levemente escurecido */
+  display: flex; align-items: center; justify-content: center; /* Centraliza vertical e horizontalmente */
+  z-index: 1000; /* Fica acima de todo o conteúdo da página */
+}
+.login-form {
+  background: #fff; /* Fundo branco */
+  border-radius: 12px; /* Borda arredondada para visual moderno */
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15); /* Sombra suave */
+  padding: 40px 32px; /* Espaço interno confortável */
+  display: flex; flex-direction: column; width: 320px; align-items: center;
+}
+.login-form h2 { 
+  margin-bottom: 24px; font-size: 1.8em; letter-spacing: 2px; color: #00c896; /* Título destacado */
+}
+.login-form input { 
+  width: 100%; padding: 12px; margin-bottom: 16px; border-radius: 5px;
+  border: 1px solid #ccc; font-size: 1em; /* Campos estilosos */
+}
+.login-form button { 
+  background: #00c896; color: #fff; border: none; border-radius: 4px;
+  padding: 12px 0; font-size: 1.1em; cursor: pointer; width: 100%; margin-bottom: 10px;
+  transition: background 0.2s; /* Animação suave ao passar mouse */
+}
+.login-form button:hover { background: #009e73; }
+.login-error { 
+  color: #d32f2f; font-size: 1em; min-height: 24px; text-align: center;
+}
+
+/* =================== LAYOUT PRINCIPAL =================== */
+/* Sidebar e conteúdo lado a lado */
+.container { 
+  display: flex; /* Layout flex horizontal */
+  height: 100vh; /* Ocupa toda altura da tela */
+  width: 100vw; /* Protege contra overflow horizontal */
+  min-width: 0; /* Evita overflow em flexbox */
+  box-sizing: border-box;
+  overflow-x: hidden; /* Impede scroll lateral */
+}
+
+/* =================== SIDEBAR MODERNA =================== */
+.sidebar {
+  width: 100%; /* Sidebar flexível, nunca 100vw! */
+  max-width: 400px; /* Limite máximo para desktop */
+  background: #111; color: #fff;
+  padding: 36px 18px 24px 18px; /* Padding ajustado */
+  display: flex; flex-direction: column; align-items: flex-start;
+  box-sizing: border-box;
+}
+.sidebar h2 {
+  margin-bottom: 40px; font-size: 1.6em; letter-spacing: 2px; align-self: center;
+}
+
+/* UG ativa */
+.ug-switcher {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  margin-bottom: 13px;
+}
+#ugAtivaLabel {
+  font-size: 1em; color: #ff9800; font-weight: 600; letter-spacing: 1px;
+}
+
+/* ====== Botões de Consulta NE/NC ====== */
+.consulta-btns {
+  display: flex; flex-direction: row; gap: 8px;
+  margin: 18px 0 12px 0; justify-content: flex-start;
+  width: 100%; box-sizing: border-box;
+}
+.consulta-btn {
+  flex: 1; min-width: 0; padding: 10px 0; font-size: 1em; border-radius: 5px;
+  border: none; background: #222d3c; color: #f2f2f2; font-weight: 500;
+  cursor: pointer; transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+}
+.consulta-btn:hover { background: #0056b3; color: #fff; }
+.consulta-btn.active { background: #00c896; color: #191919; box-shadow: 0 0 0 3px #00c89644; }
+
+/* ================= BARRA DE PESQUISA MODERNA ================= */
+/* Campo de pesquisa estilizado, responsivo e seguro */
+.search-box {
+  width: 100%; display: flex; margin-bottom: 8px;
+  box-sizing: border-box;
+}
+.search-box input {
+  flex: 1; padding: 12px 15px; border-radius: 8px;
+  border: 1.5px solid #444; font-size: 1.05em; outline: none;
+  background: #181818; color: #eaeaea;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+  box-sizing: border-box;
+}
+.search-box input:focus {
+  border: 1.5px solid #00c896; box-shadow: 0 2px 12px #00c89633;
+}
+
+/* ====== GRUPO DE BOTÕES DE AÇÃO (SAIR, BUSCAR, MUDAR UG) ====== */
+/* Estilo horizontal, alinhados, responsivos para desktop/mobile */
+.action-group {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; gap: 0;
+  min-width: 0; /* Permite encolher dentro do flex, evita overflow horizontal */
+  box-sizing: border-box;
+}
+.action-btn {
+  border: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; min-width: 38px; min-height: 38px; height: 38px; width: 38px;
+  margin: 0 2px; border-radius: 50%; transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.11);
+  flex-shrink: 0; /* IMPEDIR QUE O BOTÃO QUEBRE O LAYOUT OU CAUSE OVERFLOW */
+}
+.search-action-btn {
+  background: #0090f7; color: #fff; flex: 1;
+  border-radius: 20px; min-width: 90px; height: 38px; margin: 0 8px;
+  font-weight: 600; letter-spacing: 1px; font-size: 1em;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  box-shadow: 0 2px 8px #0090f722;
+  max-width: 100%; /* Não deixa ultrapassar o container */
+}
+.search-action-btn:hover { background: #0070c9; }
+.ug-action-btn { background: #ff9800; color: #fff; }
+.ug-action-btn:hover { background: #e67e22; }
+.logout-action-btn { background: #ff4848; color: #fff; }
+.logout-action-btn:hover { background: #c93030; }
+.action-btn svg { width: 20px; height: 20px; display: block; }
+
+/* Botões modernos (incluir, sair etc) */
+.modern-btn {
+  width: 100%; padding: 13px 0; font-size: 1.1em; margin-bottom: 16px;
+  border-radius: 6px; border: none; cursor: pointer; transition: background 0.2s, box-shadow 0.2s;
+  font-weight: 500; box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+}
+.modern-btn.green { background: #01c896; color: #fff; }
+.modern-btn.green:hover { background: #019d74; }
+.modern-btn.blue { background: #0090f7; color: #fff; }
+.modern-btn.blue:hover { background: #0070c9; }
+.modern-btn.red { background: #ff4848; color: #fff; }
+.modern-btn.red:hover { background: #c93030; }
+.modern-btn.gray { background: #ddd; color: #222; }
+.modern-btn.gray:hover { background: #bbb; }
+.modern-btn.orange { background: #ff9800; color: #fff; }
+.modern-btn.orange:hover { background: #e67e22; }
+
+/* Inputs de arquivo escondidos */
+#pdfNCInput, #pdfNEInput { display: none; }
+
+/* Barra de progresso do upload */
+.upload-progress {
+  width: 100%; height: 12px; background: #222; border-radius: 5px;
+  margin-top: 10px; overflow: hidden;
+}
+.upload-bar {
+  height: 100%; background: linear-gradient(90deg, #00c896 60%, #0090f7 100%);
+  transition: width 0.3s; width: 0%;
+}
+
+/* =================== ÁREA PRINCIPAL DAS NOTAS =================== */
+.main-content {
+  flex: 1; padding: 36px 40px 36px 36px; overflow-y: auto;
+  display: flex; flex-direction: column;
+  max-width: 100vw; /* Protege contra overflow horizontal do conteúdo */
+  box-sizing: border-box;
+}
+.section-title {
+  font-size: 1.3em; font-weight: 600; color: #222; margin-bottom: 14px; margin-top: 0; letter-spacing: 1px;
+}
+
+/* Barra separadora visual entre listas */
+.separator {
+  width: 98%; height: 3px; background: linear-gradient(90deg,#0090f7 0%, #01c896 100%);
+  margin: 32px 0 18px 0; border-radius: 2px; opacity: 0.7;
+}
+
+/* =================== LISTA AGRUPADA DE NOTAS =================== */
+.notes-list {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 22px; width: 100%; padding: 16px 0; box-sizing: border-box;
+  margin-bottom: 16px; min-width: 0; /* Permite grid encolher sem overflow */
+}
+
+/* =================== CARD DA NOTA =================== */
+.note-card {
+  background: #222d3c; border-radius: 8px; padding: 18px 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex; flex-direction: column; align-items: center; min-width: 180px; max-width: 220px;
+  position: relative; animation: fadeIn 0.6s; transition: box-shadow 0.25s, transform 0.18s;
+  box-sizing: border-box;
+}
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(0.95);}
+  100% { opacity: 1; transform: scale(1);}
+}
+.note-card:hover {
+  box-shadow: 0 6px 22px rgba(0,200,150,0.14), 0 1.5px 12px rgba(0,144,247,0.11);
+  transform: translateY(-2px) scale(1.025);
+}
+
+/* Miniatura do PDF */
+.note-thumb {
+  width: 38px; height: 55px; border-radius: 4px; object-fit: cover; background: #eee;
+  margin-bottom: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.09);
+}
+
+/* Informações do card */
+.note-name {
+  font-size: 0.73em; font-weight: 500; text-align: center; word-break: break-all;
+  margin-bottom: 4px; color: #e4e4e4;
+}
+.note-meta {
+  font-size: 0.7em; color: #bbb; margin-bottom: 5px; text-align: center;
+}
+
+/* Botão engrenagem/excluir */
+.gear-btn {
+  position: absolute; top: 11px; right: 11px; background: #eee; border: none; border-radius: 50%;
+  width: 27px; height: 27px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1.1em; color: #555; box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+  transition: background 0.2s; z-index: 2;
+}
+.gear-btn:hover { background: #ff4848; color: #fff; }
+
+/* Botão download */
+.download-btn {
+  background: #0090f7; color: #fff; border: none; border-radius: 50%;
+  width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 0.75em; position: relative; transition: background 0.2s; margin-bottom: 4px;
+}
+.download-btn:hover { background: #00c896; }
+
+/* =================== MODAL DE EXCLUSÃO =================== */
+.modal-excluir {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.18);
+  display: flex; align-items: center; justify-content: center; z-index: 2000;
+}
+.modal-content {
+  background: #fff; padding: 36px 28px; border-radius: 10px; box-shadow: 0 2px 18px rgba(0,0,0,0.14);
+  min-width: 280px; text-align: center;
+}
+.modal-content h4 {
+  margin-top: 0; margin-bottom: 18px; font-size: 1.1em; color: #d32f2f; font-weight: 600;
+}
+
+/* =================== RESPONSIVIDADE =================== */
+/* ===== DESKTOP E TABLET: Mantém layout tradicional ===== */
+@media (max-width: 900px) {
+  .container { flex-direction: column; }
+  .sidebar { width: 100%; max-width: none; flex-direction: row; justify-content: space-around; align-items: center; padding: 18px 7px;}
+  .main-content { padding: 18px 7px;}
+  .notes-list { justify-content: center; gap: 13px;}
+  .note-card { width: 95vw; max-width: 330px;}
+}
+
+/* =================== MELHORIA MOBILE =================== */
+@media (max-width: 600px) {
+  html, body {
+    height: 100vh; min-height: 100vh; width: 100vw; overflow-x: hidden;
+    box-sizing: border-box; /* EVITA SCROLL lateral em mobile */
+  }
+  .container {
+    min-height: 100vh; width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0; margin: 0; box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  .sidebar {
+    max-width: none; width: 100vw; min-width: 0;
+    padding: 10px 4vw 0 4vw;
+    flex-direction: column;
+    align-items: stretch;
+    background: #111;
+    box-sizing: border-box;
+  }
+  .search-box,
+  .search-action-group,
+  .consulta-btns { width: 100%; min-width: 0; box-sizing: border-box; }
+  .action-group { flex-wrap: nowrap; }
+  .search-action-btn { margin: 0 6px; min-width: 70px; }
+  .consulta-btn { flex: 1; min-width: 0; padding: 8px 0; font-size: 0.96em; border-radius: 5px;}
+  .notes-list {
+    display: flex; flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding: 0;
+    min-width: 0; /* Permite encolher dentro do flex */
+  }
+  .note-card {
+    min-width: 0;
+    width: 100%;
+    max-width: 92vw;
+    padding: 10px 6vw;
+    height: auto;
+    font-size: 0.82em;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 6px;
+    position: relative;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  .main-content {
+    width: 100vw;
+    max-width: 100vw;
+    margin: 0 auto;
+    padding: 12vw 3vw 70px 3vw;
+    box-sizing: border-box;
+    overflow-x: hidden; /* Protege contra scroll lateral do conteúdo! */
+  }
+  .section-title {
+    font-size: 0.93em;
+    margin: 4px 0 6px 0;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+}
+
+/* --- Rodapé padrão discreto e fixo --- */
+.footer-separator {
+  width: 100%;
+  min-height: 50px;
+  background: transparent;
+  border-top: 1.5px solid #0090f744;
+  margin-top: 12px;
+  margin-bottom: 2px;
+  box-sizing: border-box;
+}
+@media (max-width: 600px) {
+  .footer-separator {
+    min-height: 65px;
+  }
+}
+
+.footer-app {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  background: #181818cc;
+  color: #b5b5b5;
+  font-size: 0.78em;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  padding: 7px 0 6px 0;
+  z-index: 9999;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.09);
+  letter-spacing: 0.02em;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+.footer-app .footer-bar {
+  color: #888;
+  font-size: 1em;
+  user-select: none;
+}
+@media (max-width: 600px) {
+  .footer-app { gap: 6px; font-size: 0.68em; padding: 6px 0 5px 0;}
+}
+
+/* =================== NOTA DIDÁTICA E AVISO ===================
+EVITE width: 100vw OU min-width: 100vw EM ELEMENTOS INTERNOS:
+- Use sempre max-width: 100vw, min-width: 0, box-sizing: border-box
+- Nunca fixe largura em pixels para grupos de botões, inputs, containers flexíveis
+- Prefira flex: 1 e min-width: 0 para botões em linhas flexbox
+- Proteja todos containers principais com overflow-x: hidden
+Assim, o layout NÃO "escapa" e NÃO permite arrastar para o lado no mobile!
+======================================================== */
